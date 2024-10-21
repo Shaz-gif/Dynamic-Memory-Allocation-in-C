@@ -24,10 +24,6 @@ The meta information helps when freeing allocated memory. Blocks are maintained 
   - Pointer to the start of the data section.
 - A character array helps in determining where data can be stored within the block.
 
-### Functions:
-- **find_suitable_block()**: Finds a free memory block with at least the required space.
-- **split_space()**: Splits a large block if there's extra space after allocation.
-- **extend_heap()**: Extends the heap and adds a new block to the list.
 
 ### malloc() workflow:
 1. If the linked list is empty (`base` is NULL), a new block is created using `extend_heap()`.
@@ -57,15 +53,73 @@ The meta information helps when freeing allocated memory. Blocks are maintained 
 - If merging is not possible, a new block is allocated, and the data is copied using `copy_data()`.
 
 ---
+# Custom Memory Management Library
 
-## main.c
-This file includes testing code to verify all the implemented functions.
-- Two variables are created and allocated space using `malloc()`.
-- The first variable is freed, and `malloc()` is called again to show space reuse.
-- `calloc()` is then used to allocate an integer array of size 5 (values initialized to 0).
-- The array is resized to size 10 using `realloc()`.
+This project implements custom versions of malloc, calloc, realloc, and free functions.
 
----
+## Files
+
+- `my_malloc.c` and `my_malloc.h`: Implementation of custom malloc
+- `my_calloc.c` and `my_calloc.h`: Implementation of custom calloc
+- `my_realloc.c` and `my_realloc.h`: Implementation of custom realloc
+- `my_free.c` and `my_free.h`: Implementation of custom free
+- `Makefile`: Build script for compiling the library
+
+## Compilation Steps
+
+1. Ensure you have `gcc` and `make` installed on your system.
+
+2. Clone or download this repository to your local machine.
+
+3. Open a terminal and navigate to the project directory.
+
+4. Run the make command to compile the library:
+
+   ```
+   make
+   ```
+
+   This will create object files for each .c file and then combine them into a static library named `libmymemory.a`.
+
+5. To clean up the compiled files, you can use:
+
+   ```
+   make clean
+   ```
+
+## Using the Library
+
+To use this custom memory management library in your project:
+
+1. Include the necessary headers in your C file:
+
+   ```c
+   #include "my_malloc.h"
+   #include "my_calloc.h"
+   #include "my_realloc.h"
+   #include "my_free.h"
+   ```
+
+2. Compile your program with the library. For example, if your main file is named `main.c`:
+
+   ```
+   gcc -o my_program main.c -L. -lmymemory
+   ```
+
+   This assumes that `libmymemory.a` is in the current directory. The `-L.` flag tells the compiler to look for libraries in the current directory, and `-lmymemory` links against `libmymemory.a`.
+
+3. Run your program:
+
+   ```
+   ./my_program
+   ```
+
+## Note
+
+This implementation is for educational purposes and may not be suitable for production use. It doesn't include all the optimizations and safety checks that a production-quality allocator would have.
+
+
+
 
 ## References
 - [Linux Manual page - sbrk()](https://man7.org/linux/man-pages/man2/sbrk.2.html)
